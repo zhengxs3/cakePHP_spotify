@@ -51,4 +51,11 @@ class AppController extends Controller
          */
         //$this->loadComponent('FormProtection');
     }
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        $user = $this->request->getAttribute('identity');
+        $this->set(compact('user'));
+    }
 }

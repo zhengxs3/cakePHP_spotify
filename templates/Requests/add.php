@@ -19,7 +19,6 @@
             <fieldset>
                 <legend><?= __('Add Request') ?></legend>
                 <?php
-                    echo $this->Form->control('user_id', ['options' => $users]);
                     echo $this->Form->control('type');
                     echo $this->Form->control('name');
                     echo $this->Form->control('release_year', ['empty' => true]);

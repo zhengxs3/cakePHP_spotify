@@ -10,6 +10,14 @@ namespace App\Controller;
  */
 class RequestsController extends AppController
 {
+    public function beforeFilter(\Cake\Event\EventInterface $event){
+        parent::beforeFilter($event);
+
+        //configure the login action to not require authentication, preventing
+        //the 
+        $this->Authentication->addUnauthenticatedActions(['login', 'add']);
+    }
+
     /**
      * Index method
      *
@@ -45,13 +53,22 @@ class RequestsController extends AppController
     public function add()
     {
         $request = $this->Requests->newEmptyEntity();
+        $user = $this->request->getAttribute('identity');
+        var_dump($user->id);
+
         if ($this->request->is('post')) {
             $request = $this->Requests->patchEntity($request, $this->request->getData());
+
+            if ($user) {
+                $request->user_id = $user->id;
+            }
+
             if ($this->Requests->save($request)) {
                 $this->Flash->success(__('The request has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
+            debug($request->getErrors());  // 显示错误信息
             $this->Flash->error(__('The request could not be saved. Please, try again.'));
         }
         $users = $this->Requests->Users->find('list', limit: 200)->all();
