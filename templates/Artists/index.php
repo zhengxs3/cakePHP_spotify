@@ -12,8 +12,6 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('url') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -23,8 +21,6 @@
                 <?php foreach ($artists as $artist): ?>
                 <tr>
                     <td><?= $this->Number->format($artist->id) ?></td>
-                    <td><?= h($artist->created) ?></td>
-                    <td><?= h($artist->modified) ?></td>
                     <td><?= h($artist->name) ?></td>
                     <td><?= h($artist->url) ?></td>
                     <td class="actions">

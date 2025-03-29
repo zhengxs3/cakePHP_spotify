@@ -12,7 +12,7 @@ use Cake\ORM\Entity;
  * @property int $user_id
  * @property string $type
  * @property string $name
- * @property \Cake\I18n\Date|null $release_year
+ * @property string|null $release_year
  * @property int|null $artist_id
  * @property string $url
  * @property string|null $status

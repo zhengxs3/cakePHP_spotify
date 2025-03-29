@@ -19,8 +19,6 @@
                     <th><?= $this->Paginator->sort('artist_id') ?></th>
                     <th><?= $this->Paginator->sort('url') ?></th>
                     <th><?= $this->Paginator->sort('status') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -34,20 +32,31 @@
                     <td><?= h($request->release_year) ?></td>
                     <td><?= $request->hasValue('artist') ? $this->Html->link($request->artist->name, ['controller' => 'Artists', 'action' => 'view', $request->artist->id]) : '' ?></td>
                     <td><?= h($request->url) ?></td>
-                    <td><?= h($request->status) ?></td>
-                    <td><?= h($request->created) ?></td>
-                    <td><?= h($request->modified) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $request->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $request->id]) ?>
+                    <td><?= $this->Form->postLink(
+                            __('Yes'),
+                            ['action' => 'post', $request->id],
+                            [
+                                'method' => 'post',
+                                'confirm' => __('Are you sure you want to add # {0}?', $request->id),
+                                'class' => 'button'
+                            ]
+                        ) ?>
                         <?= $this->Form->postLink(
-                            __('Delete'),
+                            __('No'),
                             ['action' => 'delete', $request->id],
                             [
                                 'method' => 'delete',
                                 'confirm' => __('Are you sure you want to delete # {0}?', $request->id),
+                                'class' => 'button'
                             ]
                         ) ?>
+                    </td>
+                    <td><?= h($request->status) ?></td>
+                    
+                    <td class="actions">
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $request->id]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $request->id]) ?>
+                        
                     </td>
                 </tr>
                 <?php endforeach; ?>

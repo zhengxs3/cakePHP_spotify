@@ -72,7 +72,8 @@ class RequestsTable extends Table
         $validator
             ->scalar('type')
             ->requirePresence('type', 'create')
-            ->notEmptyString('type');
+            ->notEmptyString('type')
+            ->inList('type', ['artist', 'album']);
 
         $validator
             ->scalar('name')
@@ -81,8 +82,8 @@ class RequestsTable extends Table
             ->notEmptyString('name');
 
         $validator
-            ->date('release_year')
-            ->allowEmptyDate('release_year');
+            ->scalar('release_year')
+            ->allowEmptyString('release_year');
 
         $validator
             ->integer('artist_id')
@@ -96,7 +97,8 @@ class RequestsTable extends Table
 
         $validator
             ->scalar('status')
-            ->allowEmptyString('status');
+            ->allowEmptyString('status')
+            ->inList('status', ['pending', 'accepted', 'rejected']);
 
         return $validator;
     }
