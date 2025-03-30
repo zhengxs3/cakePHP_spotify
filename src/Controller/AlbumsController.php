@@ -15,14 +15,27 @@ class AlbumsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function index(): void
     {
         $query = $this->Albums->find()
             ->contain(['Artists']);
         $albums = $this->paginate($query);
 
-        $this->set(compact('albums'));
+        $userId = $this->request->getAttribute('identity')->id ?? 1;
+
+        $favoritesTable = $this->fetchTable('Favorites');
+
+        $favoriteAlbumIds = $favoritesTable->find()
+            ->select(['album_id'])
+            ->where(['user_id' => $userId, 'type' => 'album'])
+            ->all()                     // 把查询结果转成集合 Collection
+            ->extract('album_id')       // 提取字段
+            ->toList();                 // 转为普通 array（或者用 toArray() 也行）
+
+
+        $this->set(compact('albums', 'favoriteAlbumIds'));
     }
+
 
     /**
      * View method
@@ -100,5 +113,58 @@ class AlbumsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+
+    public function favorites(): void
+    {
+        $userId = $this->request->getAttribute('identity')->id ?? 1;
+        $favoritesTable = $this->fetchTable('Favorites');
+
+        $favoriteAlbumIds = $favoritesTable->find()
+            ->select(['album_id'])
+            ->where(['user_id' => $userId, 'type' => 'album'])
+            ->all()                     // 把查询结果转成集合 Collection
+            ->extract('album_id')       // 提取字段
+            ->toList();                 // 转为普通 array（或者用 toArray() 也行）
+
+
+        $albums = empty($albumIds) ? [] : $this->Albums->find()
+            ->contain(['Artists'])
+            ->where(['Albums.id IN' => $albumIds])
+            ->all();
+
+        $this->set(compact('albums', 'albumIds'));
+    }
+
+    public function toggleFavorite($albumId = null)
+    {
+        $this->request->allowMethod(['post']);
+        $userId = $this->request->getAttribute('identity')->id ?? 1;
+
+        $favoritesTable = $this->fetchTable('Favorites');
+
+        $favorite = $favoritesTable->find()
+            ->where(['user_id' => $userId, 'album_id' => $albumId, 'type' => 'album'])
+            ->first();
+
+        if ($favorite) {
+            $favoritesTable->delete($favorite);
+            $this->Flash->success(__('Album removed from favorites.'));
+        } else {
+            $favorite = $favoritesTable->newEntity([
+                'user_id' => $userId,
+                'album_id' => $albumId,
+                'type' => 'album',
+            ]);
+            if ($favoritesTable->save($favorite)) {
+                $this->Flash->success(__('Album added to favorites.'));
+            } else {
+                $this->Flash->error(__('Failed to add favorite.'));
+            }
+        }
+
+        return $this->redirect($this->referer());
+    }
+
 
 }

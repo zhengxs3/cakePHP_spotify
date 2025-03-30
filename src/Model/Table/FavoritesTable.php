@@ -55,11 +55,11 @@ class FavoritesTable extends Table
         ]);
         $this->belongsTo('Artists', [
             'foreignKey' => 'artist_id',
-            'joinType' => 'INNER',
+            'joinType' => 'LEFT',
         ]);
         $this->belongsTo('Albums', [
             'foreignKey' => 'album_id',
-            'joinType' => 'INNER',
+            'joinType' => 'LEFT',
         ]);
     }
 
@@ -77,11 +77,12 @@ class FavoritesTable extends Table
 
         $validator
             ->integer('artist_id')
-            ->notEmptyString('artist_id');
-
+            ->allowEmptyString('artist_id'); // ✅
+        
         $validator
             ->integer('album_id')
-            ->notEmptyString('album_id');
+            ->allowEmptyString('album_id'); // ✅
+        
 
         $validator
             ->scalar('type')

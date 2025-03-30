@@ -16,13 +16,16 @@ class FavoritesController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      */
     public function index()
-    {
-        $query = $this->Favorites->find()
-            ->contain(['Users', 'Artists', 'Albums']);
-        $favorites = $this->paginate($query);
+{
+    $userId = $this->request->getAttribute('identity')->id ?? 1;
 
-        $this->set(compact('favorites'));
-    }
+    $query = $this->Favorites->find()
+        ->where(['Favorites.user_id' => $userId])
+        ->contain(['Users', 'Artists', 'Albums']);
+
+    $favorites = $this->paginate($query);
+    $this->set(compact('favorites'));
+}
 
     /**
      * View method

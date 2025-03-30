@@ -12,8 +12,6 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
                     <th><?= $this->Paginator->sort('user_id') ?></th>
                     <th><?= $this->Paginator->sort('artist_id') ?></th>
                     <th><?= $this->Paginator->sort('album_id') ?></th>
@@ -25,12 +23,32 @@
                 <?php foreach ($favorites as $favorite): ?>
                 <tr>
                     <td><?= $this->Number->format($favorite->id) ?></td>
-                    <td><?= h($favorite->created) ?></td>
-                    <td><?= h($favorite->modified) ?></td>
                     <td><?= $favorite->hasValue('user') ? $this->Html->link($favorite->user->username, ['controller' => 'Users', 'action' => 'view', $favorite->user->id]) : '' ?></td>
                     <td><?= $favorite->hasValue('artist') ? $this->Html->link($favorite->artist->name, ['controller' => 'Artists', 'action' => 'view', $favorite->artist->id]) : '' ?></td>
-                    <td><?= $favorite->hasValue('album') ? $this->Html->link($favorite->album->name, ['controller' => 'Albums', 'action' => 'view', $favorite->album->id]) : '' ?></td>
+                    <td>
+                        <?php if ($favorite->type === 'album' && $favorite->hasValue('album') && $favorite->album->url): ?>
+                            <iframe 
+                                src="<?= h($favorite->album->url) ?>" 
+                                width="270" height="80" 
+                                frameborder="0" allowtransparency="true" 
+                                allow="encrypted-media">
+                            </iframe>
+                        <?php elseif ($favorite->hasValue('album')): ?>
+                            <?= h($favorite->album->name) ?>
+                        <?php endif; ?>
+                    </td>
+
                     <td><?= h($favorite->type) ?></td>
+                    <td>
+                        <?= $this->Form->create(null, ['url' => ['controller' => 'Albums', 'action' => 'toggleFavorite', $favorite->album_id]]) ?>
+                        <?= $this->Form->hidden('type', ['value' => $favorite->type]) ?>
+                        <?= $this->Form->button('❤️', [
+                            'style' => 'background:none;border:none;font-size:20px',
+                            'title' => 'Retirer des favoris'
+                        ]) ?>
+                        <?= $this->Form->end() ?>
+                    </td>
+
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $favorite->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $favorite->id]) ?>

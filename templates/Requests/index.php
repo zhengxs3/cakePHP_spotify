@@ -32,7 +32,7 @@
                     <td><?= h($request->release_year) ?></td>
                     <td><?= $request->hasValue('artist') ? $this->Html->link($request->artist->name, ['controller' => 'Artists', 'action' => 'view', $request->artist->id]) : '' ?></td>
                     <td>
-                        <iframe src="<?= h($request->url) ?>" width="230" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                        <iframe src="<?= h($request->url) ?>" width="270" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                     </td>
                     <td><?= $this->Form->postLink(
                             __('Yes'),

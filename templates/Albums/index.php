@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Album> $albums
  */
+
+ $favoriteAlbumIds = $favoriteAlbumIds ?? [];
 ?>
 <div class="albums index content">
     <?= $this->Html->link(__('New Album'), ['action' => 'add'], ['class' => 'button float-right']) ?>
@@ -11,24 +13,32 @@
         <table>
             <thead>
                 <tr>
+                    <th><?= __('Favorite') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
-                    
                     <th><?= $this->Paginator->sort('artist_id') ?></th>
                     <th><?= $this->Paginator->sort('Album') ?></th>
                     <th><?= $this->Paginator->sort('release_year') ?></th>
+                    
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($albums as $album): ?>
                 <tr>
-                <td><?= h($album->name) ?></td>
-                    
-                    <td><?= $album->hasValue('artist') ? $this->Html->link($album->artist->name, ['controller' => 'Artists', 'action' => 'view', $album->artist->id]) : '' ?></td>
-                   
                     <td>
-                        <iframe src="<?= h($album->url) ?>" width="230" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                        <?= $this->Form->create(null, ['url' => ['action' => 'toggleFavorite', $album->id]]) ?>
+                        <?= $this->Form->hidden('type', ['value' => 'album']) ?>
+                        <?= $this->Form->button(in_array($album->id, $favoriteAlbumIds) ? '❤️' : '🤍', [
+                            'style' => 'background:none;border:none;font-size:20px'
+                        ]) ?>
+                        <?= $this->Form->end() ?>
+                    </td>
+                    <td><?= h($album->name) ?></td>
+                    <td><?= $album->hasValue('artist') ? $this->Html->link($album->artist->name, ['controller' => 'Artists', 'action' => 'view', $album->artist->id]) : '' ?></td>
+                    <td>
+                        <iframe src="<?= h($album->url) ?>" width="270" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                     </td>
                     <td><?= h($album->release_year) ?></td>
+                    
                 </tr>
                 <?php endforeach; ?>
             </tbody>

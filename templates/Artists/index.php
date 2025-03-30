@@ -22,7 +22,7 @@
                 <tr>
                     <td><?= $this->Number->format($artist->id) ?></td>
                     <td><?= h($artist->name) ?></td>
-                    <td><?= h($artist->url) ?></td>
+                    <td><iframe src="<?= h($artist->url) ?>" width="270" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $artist->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $artist->id]) ?>
