@@ -5,25 +5,19 @@
  */
 ?>
 <div class="favorites index content">
-    <?= $this->Html->link(__('New Favorite'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Favorites') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('user_id') ?></th>
                     <th><?= $this->Paginator->sort('artist_id') ?></th>
                     <th><?= $this->Paginator->sort('album_id') ?></th>
                     <th><?= $this->Paginator->sort('type') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($favorites as $favorite): ?>
                 <tr>
-                    <td><?= $this->Number->format($favorite->id) ?></td>
-                    <td><?= $favorite->hasValue('user') ? $this->Html->link($favorite->user->username, ['controller' => 'Users', 'action' => 'view', $favorite->user->id]) : '' ?></td>
                     <td><?= $favorite->hasValue('artist') ? $this->Html->link($favorite->artist->name, ['controller' => 'Artists', 'action' => 'view', $favorite->artist->id]) : '' ?></td>
                     <td>
                         <?php if ($favorite->type === 'album' && $favorite->hasValue('album') && $favorite->album->url): ?>
@@ -37,8 +31,6 @@
                             <?= h($favorite->album->name) ?>
                         <?php endif; ?>
                     </td>
-
-                    <td><?= h($favorite->type) ?></td>
                     <td>
                         <?= $this->Form->create(null, ['url' => ['controller' => 'Albums', 'action' => 'toggleFavorite', $favorite->album_id]]) ?>
                         <?= $this->Form->hidden('type', ['value' => $favorite->type]) ?>
@@ -47,19 +39,6 @@
                             'title' => 'Retirer des favoris'
                         ]) ?>
                         <?= $this->Form->end() ?>
-                    </td>
-
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $favorite->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $favorite->id]) ?>
-                        <?= $this->Form->postLink(
-                            __('Delete'),
-                            ['action' => 'delete', $favorite->id],
-                            [
-                                'method' => 'delete',
-                                'confirm' => __('Are you sure you want to delete # {0}?', $favorite->id),
-                            ]
-                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

@@ -39,9 +39,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
         </div>
         <div class="top-nav-links">
-        <?= $this->Html->link('Albums',['controller' => 'Albums', 'action' => 'index']) ?>
+            <?= $this->Html->link('Albums',['controller' => 'Albums', 'action' => 'index']) ?>
             <?= $this->Html->link('Artistes',['controller' => 'Artists', 'action' => 'index']) ?>
-            
+            <?= $this->Html->link('Statistiques',['controller' => 'Favorites', 'action' => 'statistiques']) ?>
+
             <?php if(empty($this->request->getAttribute('identity'))): ?>
                 <?= $this->Html->link('Se connecter',['controller' => 'Users', 'action' => 'login']) ?>
             <?php else : ?>

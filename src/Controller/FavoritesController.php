@@ -107,4 +107,45 @@ class FavoritesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+
+    public function statistiques()
+    {
+        // Top 5 albums les plus favoris
+        $topAlbums = $this->Favorites->find()
+            ->select(['album_id', 'count' => 'COUNT(*)'])
+            ->where(['type' => 'album'])
+            ->group('album_id')
+            ->order(['count' => 'DESC'])
+            ->limit(5)
+            ->contain(['Albums']);
+    
+        // Bottom 5 albums les moins favoris
+        $flopAlbums = $this->Favorites->find()
+            ->select(['album_id', 'count' => 'COUNT(*)'])
+            ->where(['type' => 'album'])
+            ->group('album_id')
+            ->order(['count' => 'ASC'])
+            ->limit(5)
+            ->contain(['Albums']);
+    
+        // Top 5 utilisateurs avec le plus de favoris
+        $topUsers = $this->Favorites->find()
+            ->select(['user_id', 'count' => 'COUNT(*)'])
+            ->where(['type' => 'album'])
+            ->group('user_id')
+            ->order(['count' => 'DESC'])
+            ->limit(5)
+            ->contain(['Users']);
+
+
+            // debug($topAlbums);
+            // debug($flopAlbums);
+            // debug($topUsers);
+            
+        $this->set(compact('topAlbums', 'flopAlbums', 'topUsers'));
+    }
+    
+
+
 }
