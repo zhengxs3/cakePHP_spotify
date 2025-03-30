@@ -62,7 +62,9 @@
                             <td><?= h($album->name) ?></td>
                             <td><?= h($album->release_year) ?></td>
                             <td><?= h($album->artist_id) ?></td>
-                            <td><?= h($album->url) ?></td>
+                            <td>
+                                <iframe src="<?= h($album->url) ?>" width="230" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                            </td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Albums', 'action' => 'view', $album->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Albums', 'action' => 'edit', $album->id]) ?>

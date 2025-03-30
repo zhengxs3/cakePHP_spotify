@@ -31,7 +31,9 @@
                     <td><?= h($request->name) ?></td>
                     <td><?= h($request->release_year) ?></td>
                     <td><?= $request->hasValue('artist') ? $this->Html->link($request->artist->name, ['controller' => 'Artists', 'action' => 'view', $request->artist->id]) : '' ?></td>
-                    <td><?= h($request->url) ?></td>
+                    <td>
+                        <iframe src="<?= h($request->url) ?>" width="230" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                    </td>
                     <td><?= $this->Form->postLink(
                             __('Yes'),
                             ['action' => 'post', $request->id],
@@ -51,8 +53,7 @@
                             ]
                         ) ?>
                     </td>
-                    <td><?= h($request->status) ?></td>
-                    
+
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $request->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $request->id]) ?>

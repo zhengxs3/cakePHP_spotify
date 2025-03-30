@@ -100,4 +100,5 @@ class AlbumsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
 }

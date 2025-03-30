@@ -11,34 +11,24 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('release_year') ?></th>
+                    
                     <th><?= $this->Paginator->sort('artist_id') ?></th>
-                    <th><?= $this->Paginator->sort('url') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th><?= $this->Paginator->sort('Album') ?></th>
+                    <th><?= $this->Paginator->sort('release_year') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($albums as $album): ?>
                 <tr>
-                    <td><?= $this->Number->format($album->id) ?></td>
-                    <td><?= h($album->name) ?></td>
-                    <td><?= h($album->release_year) ?></td>
+                <td><?= h($album->name) ?></td>
+                    
                     <td><?= $album->hasValue('artist') ? $this->Html->link($album->artist->name, ['controller' => 'Artists', 'action' => 'view', $album->artist->id]) : '' ?></td>
-                    <td><?= h($album->url) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $album->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $album->id]) ?>
-                        <?= $this->Form->postLink(
-                            __('Delete'),
-                            ['action' => 'delete', $album->id],
-                            [
-                                'method' => 'delete',
-                                'confirm' => __('Are you sure you want to delete # {0}?', $album->id),
-                            ]
-                        ) ?>
+                   
+                    <td>
+                        <iframe src="<?= h($album->url) ?>" width="230" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                     </td>
+                    <td><?= h($album->release_year) ?></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
